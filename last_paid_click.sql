@@ -11,7 +11,7 @@ WITH tab AS (
 		l.status_id, 
 		ROW_NUMBER() OVER(PARTITION BY s.visitor_id ORDER BY s.visit_date DESC) AS last_click 
 	FROM sessions AS s 
-	LEFT JOIN leads AS l ON s.visitor_id = l.visitor_id 
+	LEFT JOIN leads AS l ON s.visitor_id = l.visitor_id AND s.visit_date <= l.created_at
 	WHERE s.medium IN ('cpc', 'cpm', 'cpa', 'cpp', 'tg', 'youtube', 'social')
 ) 
 SELECT 
@@ -32,3 +32,4 @@ ORDER BY
 	utm_source ASC, 
 	utm_medium ASC, 
 	utm_campaign ASC
+	LIMIT 10;
