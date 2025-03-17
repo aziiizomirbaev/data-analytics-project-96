@@ -31,5 +31,4 @@ ORDER BY
 	visit_date ASC, 
 	utm_source ASC, 
 	utm_medium ASC, 
-	utm_campaign ASC
-	LIMIT 10;
+	utm_campaign ASC;
