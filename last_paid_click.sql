@@ -1,34 +1,27 @@
 WITH tab AS (
-	SELECT 
-		s.visitor_id,
-		s.visit_date, 
-		s.source AS utm_source, 
-		s.medium AS utm_medium, 
-		s.campaign AS utm_campaign, 
-		l.lead_id, 
-		l.amount, 
-		l.closing_reason, 
-		l.status_id, 
-		ROW_NUMBER() OVER(PARTITION BY s.visitor_id ORDER BY s.visit_date DESC) AS last_click 
-	FROM sessions AS s 
-	LEFT JOIN leads AS l ON s.visitor_id = l.visitor_id AND s.visit_date <= l.created_at
-	WHERE s.medium IN ('cpc', 'cpm', 'cpa', 'cpp', 'tg', 'youtube', 'social')
+	SELECT visitor_id, MAX(visit_date) AS last_visit
+	FROM sessions 
+	WHERE medium != 'organic'
+	GROUP BY 1 
 ) 
+
 SELECT 
-	visitor_id,
-	visit_date, 
-	utm_source, 
-	utm_medium, 
-	utm_campaign, 
-	lead_id, 
-	amount, 
-	closing_reason, 
-	status_id
-FROM tab 
-WHERE last_click = 1 
+	s.visitor_id,
+    s.visit_date,
+    s.source AS utm_source,
+    s.medium AS utm_medium,
+    s.campaign AS utm_campaign,
+    l.lead_id,
+    l.created_at,
+    l.amount,
+    l.closing_reason,
+    l.status_id
+FROM sessions AS s 
+INNER JOIN tab AS t ON s.visit_date = t.last_visit AND s.visitor_id = t.visitor_id
+LEFT JOIN leads AS l ON s.visitor_id = l.visitor_id AND s.visit_date <= l.created_at
 ORDER BY 
-	amount DESC NULLS LAST, 
-	visit_date ASC, 
-	utm_source ASC, 
-	utm_medium ASC, 
-	utm_campaign ASC;
+	l.amount DESC NULLS LAST, 
+	s.visit_date ASC, 
+	s.source ASC,
+	s.medium ASC, 
+	s.campaign ASC
