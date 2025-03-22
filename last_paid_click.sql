@@ -6,7 +6,7 @@ WITH tab AS (
 ) 
 
 SELECT 
-	s.visitor_id,
+    s.visitor_id,
     s.visit_date,
     s.source AS utm_source,
     s.medium AS utm_medium,
