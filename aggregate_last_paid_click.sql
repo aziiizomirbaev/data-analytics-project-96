@@ -41,11 +41,11 @@ WITH tab AS (
 
 SELECT 
 	lp.visit_date::date, 
+	COUNT(DISTINCT lp.visitor_id) AS visitors_count, 
 	lp.utm_source, 
 	lp.utm_medium, 
 	lp.utm_campaign, 
-	COUNT(DISTINCT lp.visitor_id) AS visitors_count, 
-	a.spent AS total_cost, 
+	COALESCE(CAST(a.spent AS TEXT), '') AS total_cost,
 	COUNT(DISTINCT lp.lead_id) AS leads_count, 
 	COUNT(DISTINCT lp.lead_id) FILTER(WHERE lp.status_id = 142) AS purchases_count, 
 	SUM(lp.amount) AS revenue 

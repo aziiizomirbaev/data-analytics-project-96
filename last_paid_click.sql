@@ -6,13 +6,13 @@ WITH tab AS (
 ) 
 
 SELECT 
-    s.visitor_id,
-    s.visit_date,
+	s.visitor_id,
+    TO_CHAR(s.visit_date, 'YYYY-MM-DD HH24:MI:SS.MS') AS visit_date,
     s.source AS utm_source,
     s.medium AS utm_medium,
     s.campaign AS utm_campaign,
     l.lead_id,
-    l.created_at,
+    TO_CHAR(l.created_at, 'YYYY-MM-DD HH24:MI:SS.MS') AS created_at,
     l.amount,
     l.closing_reason,
     l.status_id
@@ -25,3 +25,4 @@ ORDER BY
 	s.source ASC,
 	s.medium ASC, 
 	s.campaign ASC
+
