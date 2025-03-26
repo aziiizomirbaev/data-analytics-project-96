@@ -4,10 +4,10 @@ WITH tab AS (
         MAX(visit_date) AS last_visit
     FROM sessions
     WHERE medium != 'organic'
-    GROUP BY visitor_id  
+    GROUP BY visitor_id
 )
 
-SELECT * 
+SELECT *
 FROM tab;
 
 WITH result AS (
@@ -34,6 +34,6 @@ FROM result
 ORDER BY
     amount DESC NULLS LAST,
     visit_date ASC,
-    utm_source ASC, 
-    utm_medium ASC, 
-    utm_campaign ASC; 
+    utm_source ASC,
+    utm_medium ASC,
+    utm_campaign ASC;
